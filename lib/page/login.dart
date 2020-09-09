@@ -36,6 +36,7 @@ class _LoginState extends State<Login> {
   _clickLogin() async {
     if (_passwordController.text == '123456' &&
         _userNameController.text == 'admin') {
+      sava();
       Fluttertoast.showToast(
         msg: "登录成功",
         gravity: ToastGravity.CENTER,
