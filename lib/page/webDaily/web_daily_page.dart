@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 // 前端日报
 class WebDailyPage extends StatefulWidget {
-  WebDailyPage({Key key}) : super(key: key);
+  WebDailyPage(Map<String, dynamic> parameters, {Key key}) : super(key: key);
   _WebDailyPageState createState() => _WebDailyPageState();
 }
 

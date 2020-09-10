@@ -12,7 +12,9 @@ class _NotRoutePageState extends State<NotRoutePage> {
     // TODO: implement build
     return Scaffold(
       body: Container(
-        child: Text('404暂无该页面'),
+        child: Center(
+          child: Text('404暂无该页面'),
+        ),
       ),
     );
   }

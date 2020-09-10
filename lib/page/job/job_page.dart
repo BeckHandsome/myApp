@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 // 招聘信息
 class JobPage extends StatefulWidget {
-  JobPage({Key key}) : super(key: key);
+  final Map<String, dynamic> parameters = {};
+  JobPage(Map<String, dynamic> parameters, {Key key}) : super(key: key);
   _JobPageState createState() => _JobPageState();
 }
 
