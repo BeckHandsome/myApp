@@ -9,6 +9,7 @@ import 'package:my_app/page/weather/weather_page.dart';
 import 'package:my_app/page/webDaily/web_daily_page.dart';
 
 class PageRouter {
+  // 使用命名路由
   static String root = '/';
   static String login = '/login';
   static String news = '/news';
@@ -20,35 +21,40 @@ class PageRouter {
 
   // 在这里我定义了一个map集合，key是页面的path,value是按照fluro的要求是一个Handler的实例
   static final Map<String, Handler> handlerRouter = {
-    root: Handler(handlerFunc: (BuildContext context, params) {
+    root: Handler(handlerFunc: (BuildContext context, parameters) {
       return Home();
     }),
-    login: Handler(handlerFunc: (BuildContext context, params) {
+    login: Handler(handlerFunc: (BuildContext context, parameters) {
       return Login();
     }),
     // 新闻
-    news: Handler(handlerFunc: (BuildContext context, params) {
-      return NewsPage();
+    news: Handler(
+        handlerFunc: (BuildContext context, Map<String, dynamic> parameters) {
+      return NewsPage(params: {'id': parameters['id'].first});
     }),
     // 天气
-    weather: Handler(handlerFunc: (BuildContext context, params) {
-      return WeatherPage();
+    weather: Handler(
+        handlerFunc: (BuildContext context, Map<String, dynamic> parameters) {
+      return WeatherPage(parameters);
     }),
     // 视频
-    // video: Handler(handlerFunc: (BuildContext context, params) {
+    // video: Handler(handlerFunc: (BuildContext context, parameters) {
     //   return Login();
     // }),
     // 段子
-    joke: Handler(handlerFunc: (BuildContext context, params) {
-      return JokePage();
+    joke: Handler(
+        handlerFunc: (BuildContext context, Map<String, dynamic> parameters) {
+      return JokePage(parameters);
     }),
     // 招聘信息
-    job: Handler(handlerFunc: (BuildContext context, params) {
-      return JobPage();
+    job: Handler(
+        handlerFunc: (BuildContext context, Map<String, dynamic> parameters) {
+      return JobPage(parameters);
     }),
     // 前端日报
-    webDaily: Handler(handlerFunc: (BuildContext context, params) {
-      return WebDailyPage();
+    webDaily: Handler(
+        handlerFunc: (BuildContext context, Map<String, dynamic> parameters) {
+      return WebDailyPage(parameters);
     }),
   };
 }

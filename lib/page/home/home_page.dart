@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:my_app/routes/application.dart';
 
@@ -77,9 +80,17 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       onTap: () {
+                        // Navigator.pushNamed(
+                        //     context, '${headerList[index]["path"]}',
+                        //     arguments: {
+                        //       'name': headerList[index]['name'],
+                        //       'path': headerList[index]["path"]
+                        //     });
+                        var json = Uri.encodeComponent('${headerList[index]}');
                         Application.router.navigateTo(
                           context,
-                          '${headerList[index]["path"]}',
+                          '${headerList[index]["path"]}?id=$json',
+                          transition: TransitionType.fadeIn,
                         );
                       }),
                 ),

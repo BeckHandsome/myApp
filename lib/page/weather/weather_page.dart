@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 // 天气
 class WeatherPage extends StatefulWidget {
-  WeatherPage({Key key}) : super(key: key);
+  WeatherPage(Map<String, dynamic> parameters, {Key key}) : super(key: key);
   _WeatherPageState createState() => _WeatherPageState();
 }
 
