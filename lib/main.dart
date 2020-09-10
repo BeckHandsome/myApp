@@ -5,6 +5,7 @@ import 'package:my_app/routes/application.dart';
 import 'package:my_app/routes/routes.dart';
 
 void main() {
+  //注入路由
   final router = Router();
   Routes.configureRoutes(router);
   Application.router = router;
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.cyan[600],
         scaffoldBackgroundColor: Colors.white,
       ),
-      onGenerateRoute: Application.router.generator,
+      onGenerateRoute: Application.router.generator, //全局注入路由
       home: BootPage(),
     );
   }

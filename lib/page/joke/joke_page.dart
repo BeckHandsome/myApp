@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 // 段子
 class JokePage extends StatefulWidget {
-  JokePage({Key key}) : super(key: key);
+  JokePage(Map<String, dynamic> parameters, {Key key}) : super(key: key);
   _JokePageState createState() => _JokePageState();
 }
 
