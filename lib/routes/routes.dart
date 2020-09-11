@@ -11,13 +11,6 @@ class Routes {
       handlerFunc: (BuildContext context, Map<String, dynamic> params) =>
           NotRoutePage(),
     );
-    // router.define(
-    //   '/news',
-    //   handler: Handler(
-    //       handlerFunc: (BuildContext context, Map<String, dynamic> parameters) {
-    //     return NewsPage(params: {'id': parameters['id'].first});
-    //   }),
-    // );
     PageRouter.handlerRouter.forEach((path, handler) {
       router.define(path,
           handler: handler, transitionType: TransitionType.inFromRight);
