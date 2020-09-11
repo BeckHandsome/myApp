@@ -30,7 +30,7 @@ class PageRouter {
     // 新闻
     news: Handler(
         handlerFunc: (BuildContext context, Map<String, dynamic> parameters) {
-      return NewsPage(params: {'id': parameters['id'].first});
+      return NewsPage(params: parameters);
     }),
     // 天气
     weather: Handler(
