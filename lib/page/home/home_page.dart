@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:my_app/routes/application.dart';
+import 'package:my_app/routes/navigator_util.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -80,17 +81,10 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       onTap: () {
-                        // Navigator.pushNamed(
-                        //     context, '${headerList[index]["path"]}',
-                        //     arguments: {
-                        //       'name': headerList[index]['name'],
-                        //       'path': headerList[index]["path"]
-                        //     });
-                        var json = Uri.encodeComponent('${headerList[index]}');
-                        Application.router.navigateTo(
+                        NavigatorUtil.navigateTo(
                           context,
-                          '${headerList[index]["path"]}?id=$json',
-                          transition: TransitionType.fadeIn,
+                          '${headerList[index]["path"]}',
+                          params: headerList[index],
                         );
                       }),
                 ),

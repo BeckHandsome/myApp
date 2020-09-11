@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:my_app/tool/fluro_convert_util.dart';
 
 // 新闻
 class NewsPage extends StatefulWidget {
@@ -8,11 +11,12 @@ class NewsPage extends StatefulWidget {
 }
 
 class _NewsPageState extends State<NewsPage> {
+  Map _params = {};
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    print(widget.params);
+    _params = FluroConvertUtils.fluroMapParamsDecode(widget.params);
   }
 
   @override
@@ -20,10 +24,10 @@ class _NewsPageState extends State<NewsPage> {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text('${widget.params['name']}'),
+        title: Text('${_params['name']}'),
       ),
       body: Container(
-        child: Text('${widget.params}'),
+        child: Text('${_params['name']}'),
       ),
     );
   }
