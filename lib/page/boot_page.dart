@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/routes/application.dart';
-import 'package:my_app/routes/routes.dart';
+import 'package:my_app/routes/navigator_util.dart';
 import 'package:my_app/tool/util.dart';
 import 'package:my_app/widgets/widget_drow_progress.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class BootPage extends StatefulWidget {
   @override
@@ -30,13 +28,15 @@ class _BootPageState extends State<BootPage> {
 
   // 模拟是否需要在次登录
   _get() async {
-    if (sharedGetData('password') != null &&
-        sharedGetData('password') == '123456') {
-      Application.router
-          .navigateTo(context, '/', replace: true, clearStack: true);
+    print(await sharedGetData('password'));
+    if (await sharedGetData('password') != null &&
+        await sharedGetData('password') == '123456') {
+      Navigator.pop(context);
+      NavigatorUtil.navigateTo(context, '/', replace: true, clearStack: true);
     } else {
-      Application.router
-          .navigateTo(context, '/login', replace: true, clearStack: true);
+      Navigator.pop(context);
+      NavigatorUtil.navigateTo(context, '/login',
+          replace: true, clearStack: true);
     }
   }
 

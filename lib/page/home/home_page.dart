@@ -1,9 +1,7 @@
-import 'dart:convert';
-
-import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:my_app/routes/application.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:my_app/routes/navigator_util.dart';
+import 'package:my_app/widgets/widget_marquee_control.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -57,6 +55,7 @@ class _HomePageState extends State<HomePage> {
       body: Container(
         child: ListView(
           children: [
+            // 上部列表的展示
             Padding(
               padding: EdgeInsets.all(20),
               child: Wrap(
@@ -87,6 +86,52 @@ class _HomePageState extends State<HomePage> {
                           params: headerList[index],
                         );
                       }),
+                ),
+              ),
+            ),
+            // 实时信息滚动
+            Padding(
+              padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minWidth: double.infinity, //宽度尽可能大
+                  maxHeight: 50.0, //最小高度为50像素
+                ),
+                child: Swiper(
+                  scrollDirection: Axis.horizontal,
+                  autoplay: true,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Text('${headerList[index]['name']}');
+                  },
+                  itemCount: headerList.length,
+                  // control: SwiperControl(),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minWidth: double.infinity, //宽度尽可能大
+                  maxHeight: 50.0, //最小高度为50像素
+                ),
+                child: MarqueeControlWidget(
+                  stepOffset: 300,
+                  children: Row(
+                    children: List.generate(
+                      4,
+                      (index) => Padding(
+                        padding: EdgeInsets.only(right: 20),
+                        child: Text(
+                          '手机用户155****052$index借款成功',
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Color(0xFFEE8E2B),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),

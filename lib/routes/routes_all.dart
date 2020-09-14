@@ -35,7 +35,7 @@ class PageRouter {
     // 天气
     weather: Handler(
         handlerFunc: (BuildContext context, Map<String, dynamic> parameters) {
-      return WeatherPage(parameters);
+      return WeatherPage(params: parameters);
     }),
     // 视频
     // video: Handler(handlerFunc: (BuildContext context, parameters) {
@@ -44,17 +44,17 @@ class PageRouter {
     // 段子
     joke: Handler(
         handlerFunc: (BuildContext context, Map<String, dynamic> parameters) {
-      return JokePage(parameters);
+      return JokePage(params: parameters);
     }),
     // 招聘信息
     job: Handler(
         handlerFunc: (BuildContext context, Map<String, dynamic> parameters) {
-      return JobPage(parameters);
+      return JobPage(params: parameters);
     }),
     // 前端日报
     webDaily: Handler(
         handlerFunc: (BuildContext context, Map<String, dynamic> parameters) {
-      return WebDailyPage(parameters);
+      return WebDailyPage(params: parameters);
     }),
   };
 }
