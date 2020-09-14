@@ -31,7 +31,10 @@ dependencies:
   fluro: ^1.6.3
   # 本地存储
   shared_preferences: ^0.5.6+3
+  # toast提示框
   fluttertoast: ^7.0.4
+  # 轮播图
+  flutter_swiper: ^1.1.6
 
 dev_dependencies:
   flutter_test:

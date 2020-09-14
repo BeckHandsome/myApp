@@ -29,8 +29,8 @@ class _LoginState extends State<Login> {
   }
 
   geta() async {
-    _userNameController.text = sharedGetData('userName');
-    _passwordController.text = sharedGetData('password');
+    _userNameController.text = await sharedGetData('userName');
+    _passwordController.text = await sharedGetData('password');
   }
 
   _clickLogin() async {
@@ -67,75 +67,49 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return GestureDetector(
       child: Scaffold(
-          backgroundColor: Color(0xFF25304C),
-          body: Container(
-            width: double.infinity,
-            height: double.infinity,
-            padding: EdgeInsets.all(30),
-            child: Column(
-              children: <Widget>[
-                Center(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 50),
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50.0),
-                        color: Colors.white,
-                      ),
-                      child: SizedBox(
-                        width: 180,
-                        height: 180,
-                        child: Placeholder(
-                          fallbackWidth: 200,
-                          fallbackHeight: 200,
-                          color: Colors.orange,
+        backgroundColor: Color(0xFF25304C),
+        body: Container(
+          width: double.infinity,
+          height: double.infinity,
+          padding: EdgeInsets.all(30),
+          child: ListView(
+            children: [
+              Column(
+                children: <Widget>[
+                  Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 40),
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50.0),
+                          color: Colors.white,
+                        ),
+                        child: SizedBox(
+                          width: 180,
+                          height: 180,
+                          child: Placeholder(
+                            fallbackWidth: 200,
+                            fallbackHeight: 200,
+                            color: Colors.orange,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    children: <Widget>[
-                      TextFormField(
-                        controller: _userNameController, //通过controller获取输入框内容
-                        autofocus: false, //自动获取焦点
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                        decoration: InputDecoration(
-                          labelText: "用户名",
-                          labelStyle: TextStyle(color: Colors.white),
-                          hintText: ("请输入用户名"),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.orange),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red),
-                          ),
-                          prefixIcon:
-                              Icon(Icons.person_outline, color: Colors.white),
-                          hintStyle: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                        validator: (v) {
-                          return v.trim().length > 0 ? null : "请输入用户名";
-                        },
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 10),
-                        child: TextFormField(
-                          controller: _passwordController,
-                          obscureText: true,
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      children: <Widget>[
+                        TextFormField(
+                          controller: _userNameController, //通过controller获取输入框内容
+                          autofocus: false, //自动获取焦点
                           style: TextStyle(
                             color: Colors.white,
                           ),
                           decoration: InputDecoration(
-                            labelText: "密码",
+                            labelText: "用户名",
                             labelStyle: TextStyle(color: Colors.white),
-                            hintText: ("请输入密码"),
+                            hintText: ("请输入用户名"),
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.orange),
                             ),
@@ -149,63 +123,94 @@ class _LoginState extends State<Login> {
                             ),
                           ),
                           validator: (v) {
-                            return v.trim().length > 5 ? null : "密码不能少于6位";
-                          },
-                          onFieldSubmitted: (v) {
-                            if ((_formKey.currentState as FormState)
-                                .validate()) {
-                              _clickLogin();
-                            }
+                            return v.trim().length > 0 ? null : "请输入用户名";
                           },
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 25),
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints.expand(height: 55),
-                          child: RaisedButton(
-                            color: Theme.of(context).primaryColor,
-                            onPressed: () {
-                              print(_userNameController.text);
+                        Padding(
+                          padding: EdgeInsets.only(top: 10),
+                          child: TextFormField(
+                            controller: _passwordController,
+                            obscureText: true,
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                            decoration: InputDecoration(
+                              labelText: "密码",
+                              labelStyle: TextStyle(color: Colors.white),
+                              hintText: ("请输入密码"),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.orange),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.red),
+                              ),
+                              prefixIcon: Icon(Icons.person_outline,
+                                  color: Colors.white),
+                              hintStyle: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                            validator: (v) {
+                              return v.trim().length > 5 ? null : "密码不能少于6位";
+                            },
+                            onFieldSubmitted: (v) {
                               if ((_formKey.currentState as FormState)
                                   .validate()) {
                                 _clickLogin();
                               }
                             },
-                            textColor: Colors.white,
-                            child: Text("登录"),
                           ),
                         ),
-                      ),
-                      ConstrainedBox(
-                        constraints: BoxConstraints.expand(height: 55),
-                        child: RaisedButton(
-                          color: Theme.of(context).primaryColor,
-                          onPressed: () {
-                            sava();
-                          },
-                          textColor: Colors.white,
-                          child: Text("存储"),
+                        Padding(
+                          padding: EdgeInsets.only(top: 25),
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints.expand(height: 55),
+                            child: RaisedButton(
+                              color: Theme.of(context).primaryColor,
+                              onPressed: () {
+                                print(_userNameController.text);
+                                if ((_formKey.currentState as FormState)
+                                    .validate()) {
+                                  _clickLogin();
+                                }
+                              },
+                              textColor: Colors.white,
+                              child: Text("登录"),
+                            ),
+                          ),
                         ),
-                      ),
-                      ConstrainedBox(
-                        constraints: BoxConstraints.expand(height: 55),
-                        child: RaisedButton(
-                          color: Theme.of(context).primaryColor,
-                          onPressed: () {
-                            geta();
-                          },
-                          textColor: Colors.white,
-                          child: Text("读取"),
+                        ConstrainedBox(
+                          constraints: BoxConstraints.expand(height: 55),
+                          child: RaisedButton(
+                            color: Theme.of(context).primaryColor,
+                            onPressed: () {
+                              sava();
+                            },
+                            textColor: Colors.white,
+                            child: Text("存储"),
+                          ),
                         ),
-                      ),
-                    ],
+                        ConstrainedBox(
+                          constraints: BoxConstraints.expand(height: 55),
+                          child: RaisedButton(
+                            color: Theme.of(context).primaryColor,
+                            onPressed: () {
+                              geta();
+                            },
+                            textColor: Colors.white,
+                            child: Text("读取"),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
+            ],
           ),
-          resizeToAvoidBottomPadding: false),
+        ),
+        resizeToAvoidBottomPadding: false,
+      ),
     );
   }
 }
