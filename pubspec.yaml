@@ -35,7 +35,11 @@ dependencies:
   fluttertoast: ^7.0.4
   # 轮播图
   flutter_swiper: ^1.1.6
-
+  # 获取权限
+  permission_handler: ^5.0.1+1
+  # 位置
+  amap_location: ^0.2.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -55,6 +59,7 @@ flutter:
   assets:
   - images/79a00895ly1gfsxmumpncg205k09t7wh.gif
   - images/u=2070453827,1163403148&fm=26&gp=0.jpg
+  - images/timg.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

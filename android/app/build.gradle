@@ -26,6 +26,9 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
+    def keystorePropertiesFile = rootProject.file("key.properties")
+    def keystoreProperties = new Properties()
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
     compileSdkVersion 28
 
     sourceSets {
@@ -43,14 +46,26 @@ android {
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        manifestPlaceholders = [
+                AMAP_KEY : "152e721d91582e520b5bc7b5a8a71ebf", /// 高德地图key
+        ]
     }
-
-    buildTypes {
-        release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+    signingConfigs { 
+        release { 
+            keyAlias keystoreProperties['keyAlias'] 
+            keyPassword keystoreProperties['keyPassword'] 
+            storeFile file(keystoreProperties['storeFile']) 
+            storePassword keystoreProperties['storePassword'] 
         }
+    }
+    buildTypes {
+        release { signingConfig signingConfigs.release }
+        // release {
+        //    // TODO: Add your own signing config for the release build.
+        //     // Signing with the debug keys for now, so `flutter run --release` works.
+        //     // signingConfig signingConfigs.debug
+            
+        // }
     }
 }
 
@@ -60,4 +75,5 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.amap.api:location:latest.integration'
 }
