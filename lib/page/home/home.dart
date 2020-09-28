@@ -15,18 +15,6 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: Center(
-          child: ClipOval(
-            child: Image.asset(
-              'images/u=2070453827,1163403148&fm=26&gp=0.jpg',
-              // fit: BoxFit.fitWidth,
-              width: 40,
-            ),
-          ),
-        ),
-        title: Text("myapp"),
-      ),
       body: barPage[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
