@@ -39,6 +39,8 @@ dependencies:
   permission_handler: ^5.0.1+1
   # 位置
   amap_location: ^0.2.0
+  # 缓存
+  path_provider: ^1.6.18
   
 dev_dependencies:
   flutter_test:
