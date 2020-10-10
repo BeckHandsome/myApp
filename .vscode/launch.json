@@ -5,7 +5,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "my_app",
+      "name": "myApp",
       "request": "launch",
       "type": "dart"
     }

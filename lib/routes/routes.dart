@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:my_app/page/404_page.dart';
 import 'package:fluro/fluro.dart';
-import 'package:my_app/page/news/news_page.dart';
 import 'package:my_app/routes/routes_all.dart';
 
 class Routes {

@@ -2,9 +2,9 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:my_app/page/home/home.dart';
 import 'package:my_app/page/job/job_page.dart';
-import 'package:my_app/page/joke/joke_page.dart';
 import 'package:my_app/page/login.dart';
 import 'package:my_app/page/news/news_page.dart';
+import 'package:my_app/page/picture/picture_page.dart';
 import 'package:my_app/page/weather/weather_page.dart';
 import 'package:my_app/page/webDaily/web_daily_page.dart';
 
@@ -15,7 +15,7 @@ class PageRouter {
   static String news = '/news';
   static String weather = '/weather';
   // static String video = '/video';
-  static String joke = '/joke';
+  static String picture = '/picture';
   static String job = '/job';
   static String webDaily = '/webDaily';
 
@@ -41,10 +41,10 @@ class PageRouter {
     // video: Handler(handlerFunc: (BuildContext context, parameters) {
     //   return Login();
     // }),
-    // 段子
-    joke: Handler(
+    // 图片
+    picture: Handler(
         handlerFunc: (BuildContext context, Map<String, dynamic> parameters) {
-      return JokePage(params: parameters);
+      return PicturePage(params: parameters);
     }),
     // 招聘信息
     job: Handler(

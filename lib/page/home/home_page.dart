@@ -32,8 +32,8 @@ class _HomePageState extends State<HomePage>
     },
     {
       'image': 'images/u=2070453827,1163403148&fm=26&gp=0.jpg',
-      'name': '段子',
-      'path': '/joke',
+      'name': '图片',
+      'path': '/picture',
     },
     {
       'image': 'images/u=2070453827,1163403148&fm=26&gp=0.jpg',
@@ -70,11 +70,11 @@ class _HomePageState extends State<HomePage>
       AMapLocation res = await AMapLocationClient.getLocation(true);
       Fluttertoast.showToast(
         msg: "定位成功：经度${res.longitude}纬度${res.latitude}",
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Color(int.parse('0x0cf000000')).withOpacity(0.5),
-        textColor: Colors.white,
-        fontSize: 16.0,
+        // gravity: ToastGravity.CENTER,
+        // timeInSecForIosWeb: 1,
+        // backgroundColor: Color(int.parse('0x0cf000000')).withOpacity(0.5),
+        // textColor: Colors.white,
+        // fontSize: 16.0,
       );
       setState(() {
         _city = res.citycode;
