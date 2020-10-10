@@ -41,6 +41,12 @@ dependencies:
   amap_location: ^0.2.0
   # 缓存
   path_provider: ^1.6.18
+  # 图片缓存
+  cached_network_image: ^2.3.2+1
+  # 加密算法函数
+  crypto: ^2.1.5
+  # http请求
+  dio: ^3.0.9
   
 dev_dependencies:
   flutter_test:

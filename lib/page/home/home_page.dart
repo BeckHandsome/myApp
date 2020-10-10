@@ -32,8 +32,8 @@ class _HomePageState extends State<HomePage>
     },
     {
       'image': 'images/u=2070453827,1163403148&fm=26&gp=0.jpg',
-      'name': '段子',
-      'path': '/joke',
+      'name': '图片',
+      'path': '/picture',
     },
     {
       'image': 'images/u=2070453827,1163403148&fm=26&gp=0.jpg',

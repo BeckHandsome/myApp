@@ -60,7 +60,11 @@
     <!--用于读取手机当前的状态-->
     <uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
     <!--用于写入缓存数据到扩展存储卡-->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+    <!-- 数据存储权限 -->
+    <uses-permission android:name="android.permission.MODE_WORLD_READABLE"/>
+    <uses-permission android:name="android.permission.MODE_WORLD_WRITEABLE"/>
     <!--用于申请调用A-GPS模块-->
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"></uses-permission>
     <!--用于申请获取蓝牙信息进行室内定位-->
