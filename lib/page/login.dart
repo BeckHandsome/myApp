@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:my_app/routes/application.dart';
+import 'package:my_app/routes/navigator_util.dart';
 import 'package:my_app/tool/util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -48,8 +49,7 @@ class _LoginState extends State<Login> {
       Timer(Duration(seconds: 2), () {
         // pushNamedAndRemoveUntil用户已经登陆进入 HomeScreen ，然后经过一系列操作回到配合只界面想要退出登录，你不能够直接 Push 进入 LoginScreen 吧？你需要将之前路由中的实例全部删除是的用户不会在回到先前的路由中。pushNamedAndRemoveUntil 可实现该功能：Navigator.of(context).pushNamedAndRemoveUntil('/screen4', (Route<dynamic> route) => false);这里的 (Route<dynamic> route) => false 能够确保删除先前所有实例。
         // pushReplacementNamed：当用户成功登录并且现在在 HomeScreen 上时，您不希望用户还能够返回到 LoginScreen。因此，登录应完全由首页替换。另一个例子是从 SplashScreen 转到 HomeScreen。 它应该只显示一次，用户不能再从 HomeScreen 返回它。 在这种情况下，由于我们要进入一个全新的屏幕，我们可能需要借助此方法。Navigator.pushReplacementNamed(context,"/login",);
-        Application.router
-            .navigateTo(context, '/', replace: true, clearStack: true);
+        NavigatorUtil.navigateTo(context, '/', replace: true, clearStack: true);
       });
     } else {
       Fluttertoast.showToast(
@@ -179,28 +179,28 @@ class _LoginState extends State<Login> {
                             ),
                           ),
                         ),
-                        ConstrainedBox(
-                          constraints: BoxConstraints.expand(height: 55),
-                          child: RaisedButton(
-                            color: Theme.of(context).primaryColor,
-                            onPressed: () {
-                              sava();
-                            },
-                            textColor: Colors.white,
-                            child: Text("存储"),
-                          ),
-                        ),
-                        ConstrainedBox(
-                          constraints: BoxConstraints.expand(height: 55),
-                          child: RaisedButton(
-                            color: Theme.of(context).primaryColor,
-                            onPressed: () {
-                              geta();
-                            },
-                            textColor: Colors.white,
-                            child: Text("读取"),
-                          ),
-                        ),
+                        // ConstrainedBox(
+                        //   constraints: BoxConstraints.expand(height: 55),
+                        //   child: RaisedButton(
+                        //     color: Theme.of(context).primaryColor,
+                        //     onPressed: () {
+                        //       sava();
+                        //     },
+                        //     textColor: Colors.white,
+                        //     child: Text("存储"),
+                        //   ),
+                        // ),
+                        // ConstrainedBox(
+                        //   constraints: BoxConstraints.expand(height: 55),
+                        //   child: RaisedButton(
+                        //     color: Theme.of(context).primaryColor,
+                        //     onPressed: () {
+                        //       geta();
+                        //     },
+                        //     textColor: Colors.white,
+                        //     child: Text("读取"),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),

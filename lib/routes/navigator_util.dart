@@ -32,6 +32,8 @@ class NavigatorUtil {
     Application.router.navigateTo(
       context,
       path,
+      replace: replace,
+      clearStack: clearStack,
       transition: transition,
     );
   }

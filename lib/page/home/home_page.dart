@@ -66,19 +66,14 @@ class _HomePageState extends State<HomePage>
         locationMode: AMapLocationMode.Hight_Accuracy,
         gpsFirst: true,
         desiredAccuracy: CLLocationAccuracy.kCLLocationAccuracyBest,
+        geoLanguage: GeoLanguage.ZH,
+        needsAddress: true,
       ));
-      AMapLocation res = await AMapLocationClient.getLocation(true);
-      Fluttertoast.showToast(
-        msg: "定位成功：经度${res.longitude}纬度${res.latitude}",
-        // gravity: ToastGravity.CENTER,
-        // timeInSecForIosWeb: 1,
-        // backgroundColor: Color(int.parse('0x0cf000000')).withOpacity(0.5),
-        // textColor: Colors.white,
-        // fontSize: 16.0,
-      );
-      setState(() {
-        _city = res.citycode;
+      AMapLocationClient.onLocationUpate.listen((AMapLocation loc) {
+        if (!mounted) return;
+        _getAddress(loc);
       });
+      AMapLocationClient.startLocation();
       return;
     } else {
       final status = await permission.request();
@@ -87,21 +82,34 @@ class _HomePageState extends State<HomePage>
           locationMode: AMapLocationMode.Hight_Accuracy,
           gpsFirst: true,
           desiredAccuracy: CLLocationAccuracy.kCLLocationAccuracyBest,
+          geoLanguage: GeoLanguage.ZH,
+          needsAddress: true,
         ));
-        AMapLocation res = await AMapLocationClient.getLocation(true);
-        Fluttertoast.showToast(
-          msg: "定位成功：经度${res.longitude}纬度${res.latitude}",
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Color(int.parse('0x0cf000000')).withOpacity(0.5),
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
-        setState(() {
-          _city = res.citycode;
+        AMapLocationClient.onLocationUpate.listen((AMapLocation loc) {
+          if (!mounted) return;
+          _getAddress(loc);
         });
+        AMapLocationClient.startLocation();
       }
     }
+  }
+
+  Future<void> _getAddress(AMapLocation loc) async {
+    Fluttertoast.showToast(
+      msg:
+          "定位成功：经度${loc.longitude}纬度${loc.latitude}city${loc.city}formattedAddress${loc.formattedAddress}",
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Color(int.parse('0x0cf000000')).withOpacity(0.5),
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+    setState(() {
+      _city = loc.city;
+      if (_city != null) {
+        AMapLocationClient.stopLocation();
+      }
+    });
   }
 
   @override
