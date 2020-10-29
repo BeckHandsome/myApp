@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:my_app/routes/navigator_util.dart';
 import 'package:path_provider/path_provider.dart';
 
 class MyPage extends StatefulWidget {
@@ -134,6 +135,12 @@ class _MyPageState extends State<MyPage> {
                           leading: Icon(Icons.verified_user),
                           title: Text('个人资料'),
                           trailing: Icon(Icons.keyboard_arrow_right),
+                          onTap: () {
+                            NavigatorUtil.navigateTo(
+                              context,
+                              '/userInfo',
+                            );
+                          },
                         ),
                       ),
                       Container(
@@ -150,6 +157,12 @@ class _MyPageState extends State<MyPage> {
                           leading: Icon(Icons.settings),
                           title: Text('设置'),
                           trailing: Icon(Icons.keyboard_arrow_right),
+                          onTap: () {
+                            NavigatorUtil.navigateTo(
+                              context,
+                              '/set',
+                            );
+                          },
                         ),
                       ),
                       Container(
