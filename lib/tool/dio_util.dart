@@ -10,6 +10,7 @@ class NWApi {
       "/News/new_list"; //接口返回：{"code": int, "message": "String", "data": {"account": "String", "password": "String"}}
   static final weather = "/Weather/get_weather";
   static final picture = "/picture/index";
+  static final videoList = "/Video/index";
 }
 
 class Method {

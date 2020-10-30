@@ -47,6 +47,8 @@ dependencies:
   crypto: ^2.1.5
   # http请求
   dio: ^3.0.9
+  # webview 展示html页面
+  webview_flutter: ^0.3.24
   
 dev_dependencies:
   flutter_test:

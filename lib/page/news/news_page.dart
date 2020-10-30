@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:my_app/routes/navigator_util.dart';
 import 'package:my_app/tool/dio_util.dart';
 import 'package:my_app/tool/fluro_convert_util.dart';
 
@@ -123,7 +124,16 @@ class _NewListState extends State<NewList> {
               children: List.generate(
                 _dataList.length,
                 (index) => GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    NavigatorUtil.navigateTo(
+                      context,
+                      '/newsDetail',
+                      params: {
+                        "title": _dataList[index]['title'],
+                        "url": _dataList[index]["url"]
+                      },
+                    );
+                  },
                   behavior: HitTestBehavior.opaque,
                   child: Container(
                     padding: EdgeInsets.only(top: 10, bottom: 10),
