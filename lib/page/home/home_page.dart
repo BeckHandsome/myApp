@@ -112,7 +112,7 @@ class _HomePageState extends State<HomePage> {
 
   //获取轮播图信息
   Future _getSwiperList() async {
-    return DioUtil().get(NWApi.news, pathParams: {"type": 1, "page": 10});
+    return DioUtil().get(NWApi.news, pathParams: {"type": 0, "page": 10});
   }
 
   // 获取视频

@@ -34,9 +34,8 @@ class PageRouter {
       return Login();
     }),
     // 新闻
-    news: Handler(
-        handlerFunc: (BuildContext context, Map<String, dynamic> parameters) {
-      return NewsPage(params: parameters);
+    news: Handler(handlerFunc: (BuildContext context, parameters) {
+      return NewsPage();
     }),
     // 新闻详情
     newsDetail: Handler(
