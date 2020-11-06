@@ -5,6 +5,7 @@ import 'package:my_app/page/job/job_page.dart';
 import 'package:my_app/page/login.dart';
 import 'package:my_app/page/my_page/set_page.dart';
 import 'package:my_app/page/my_page/user_info_page.dart';
+import 'package:my_app/page/news/news_detail_page.dart';
 import 'package:my_app/page/news/news_page.dart';
 import 'package:my_app/page/picture/picture_page.dart';
 import 'package:my_app/page/weather/weather_page.dart';
@@ -15,13 +16,14 @@ class PageRouter {
   static String root = '/';
   static String login = '/login';
   static String news = '/news';
+  static String newsDetail = '/newsDetail';
   static String weather = '/weather';
   // static String video = '/video';
   static String picture = '/picture';
   static String job = '/job';
   static String webDaily = '/webDaily';
   static String userInfo = '/userInfo';
-  static String set = '/set';
+  static String mySet = '/set';
 
   // 在这里我定义了一个map集合，key是页面的path,value是按照fluro的要求是一个Handler的实例
   static final Map<String, Handler> handlerRouter = {
@@ -32,9 +34,13 @@ class PageRouter {
       return Login();
     }),
     // 新闻
-    news: Handler(
+    news: Handler(handlerFunc: (BuildContext context, parameters) {
+      return NewsPage();
+    }),
+    // 新闻详情
+    newsDetail: Handler(
         handlerFunc: (BuildContext context, Map<String, dynamic> parameters) {
-      return NewsPage(params: parameters);
+      return NewsDetailPage(params: parameters);
     }),
     // 天气
     weather: Handler(
@@ -66,7 +72,7 @@ class PageRouter {
       return UserInfoPage();
     }),
     // 设置
-    set: Handler(
+    mySet: Handler(
         handlerFunc: (BuildContext context, Map<String, dynamic> parameters) {
       return SetPage();
     }),

@@ -1,8 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:my_app/routes/navigator_util.dart';
 import 'package:my_app/tool/dio_util.dart';
 import 'package:my_app/tool/fluro_convert_util.dart';
+import 'package:my_app/widgets/widget_refresh.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 // 新闻
 class NewsPage extends StatefulWidget {
@@ -30,7 +31,8 @@ class _NewsPageState extends State<NewsPage> with TickerProviderStateMixin {
       {"name": "教育", "id": 6},
       {"name": "要闻", "id": 7},
     ];
-    _tabController = TabController(length: _tabs.length, vsync: this);
+    _tabController =
+        TabController(initialIndex: 0, length: _tabs.length, vsync: this);
   }
 
   @override
@@ -38,7 +40,7 @@ class _NewsPageState extends State<NewsPage> with TickerProviderStateMixin {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text('${_params['name']}'),
+        title: Text('新闻'),
       ),
       body: Container(
         child: Column(
@@ -52,27 +54,28 @@ class _NewsPageState extends State<NewsPage> with TickerProviderStateMixin {
                     border: Border(bottom: BorderSide(color: Colors.grey)),
                   ),
                   child: TabBar(
-                      labelColor: Colors.white,
-                      isScrollable: true,
-                      controller: _tabController,
-                      tabs: _tabs
-                          .map(
-                            (i) => Tab(
-                              text: "${i['name']}",
-                            ),
-                          )
-                          .toList()),
+                    labelColor: Colors.white,
+                    isScrollable: true,
+                    controller: _tabController,
+                    tabs: _tabs
+                        .map(
+                          (i) => Tab(
+                            text: "${i['name']}",
+                          ),
+                        )
+                        .toList(),
+                  ),
                 ),
               ),
             ),
             Expanded(
               child: TabBarView(
                 controller: _tabController,
-                children: List.generate(_tabs.length, (index) {
+                children: _tabs.map((index) {
                   return NewList(
-                    type: index,
+                    type: index['id'],
                   );
-                }),
+                }).toList(),
               ),
             ),
           ],
@@ -88,20 +91,46 @@ class NewList extends StatefulWidget {
   _NewListState createState() => _NewListState();
 }
 
-class _NewListState extends State<NewList> {
+class _NewListState extends State<NewList> with AutomaticKeepAliveClientMixin {
   List _dataList = [];
+  int _pageNumber = 10;
   @override
+  bool get wantKeepAlive => true;
+
+  ///see AutomaticKeepAliveClientMixin
   void initState() {
     // TODO: implement initState
     super.initState();
-    this._getNewsData();
+    _onRefresh();
   }
 
-  Future _getNewsData() async {
-    DioUtil()
-        .get(NWApi.news, pathParams: {"type": widget.type, "page": 20}).then(
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
+  void _onRefresh() async {
+    _pageNumber = 10;
+    // monitor network fetch
+    await DioUtil().get(NWApi.news,
+        pathParams: {"type": widget.type, "page": _pageNumber}).then(
       (res) => {
         print(res),
+        if (res["msg"] == "success" && res['data'] != null)
+          {
+            setState(() {
+              _dataList = res["data"];
+            })
+          }
+      },
+    );
+    // if failed,use refreshFailed()
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading() async {
+    // monitor network fetch
+    await DioUtil().get(NWApi.news,
+        pathParams: {"type": widget.type, "page": _pageNumber += 10}).then(
+      (res) => {
         if (res["msg"] == "success" && res['data'] != null)
           {
             setState(() {
@@ -110,80 +139,86 @@ class _NewListState extends State<NewList> {
           }
       },
     );
+    _refreshController.loadComplete();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: Column(
-              children: List.generate(
-                _dataList.length,
-                (index) => GestureDetector(
-                  onTap: () {},
-                  behavior: HitTestBehavior.opaque,
-                  child: Container(
-                    padding: EdgeInsets.only(top: 10, bottom: 10),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom:
-                            BorderSide(width: 1.0, color: Color(0xFF999999)),
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Flex(
-                          direction: Axis.horizontal,
-                          children: <Widget>[
-                            Expanded(
-                              flex: 3,
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                  right: 10,
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text("${_dataList[index]["title"]}"),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: <Widget>[
-                                        Text(
-                                          "${_dataList[index]["source"]} ",
-                                          style: TextStyle(
-                                              color: Color(0xFF888888)),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: SizedBox(
-                                height: 100,
-                                child: Image.network(
-                                  "${_dataList[index]["imgsrc"]}",
-                                  fit: BoxFit.fill,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
+    super.build(context);
+
+    /// see AutomaticKeepAliveClientMixin
+    return WidgetRefresh(
+      controller: _refreshController,
+      onRefresh: _onRefresh,
+      onLoading: _onLoading,
+      child: ListView(
+        children: List.generate(
+          _dataList.length,
+          (int i) => GestureDetector(
+            onTap: () {
+              NavigatorUtil.navigateTo(
+                context,
+                '/newsDetail',
+                params: {
+                  "title": _dataList[i]['title'],
+                  "url": _dataList[i]["url"]
+                },
+              );
+            },
+            behavior: HitTestBehavior.opaque,
+            child: Container(
+              padding: EdgeInsets.only(top: 10, bottom: 10),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(width: 1.0, color: Color(0xFF999999)),
                 ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Flex(
+                    direction: Axis.horizontal,
+                    children: <Widget>[
+                      Expanded(
+                        flex: 3,
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            right: 10,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text("${_dataList[i]["title"]}"),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    "${_dataList[i]["source"]} ",
+                                    style: TextStyle(color: Color(0xFF888888)),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: SizedBox(
+                          height: 100,
+                          child: Image.network(
+                            "${_dataList[i]["imgsrc"]}",
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),
-        ],
+        ),
       ),
     );
   }

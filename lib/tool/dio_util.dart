@@ -8,8 +8,10 @@ class NWApi {
   static final baseApi = "https://api.isoyu.com/api";
   static final news =
       "/News/new_list"; //接口返回：{"code": int, "message": "String", "data": {"account": "String", "password": "String"}}
+  static final banner = "/News/banner";
   static final weather = "/Weather/get_weather";
   static final picture = "/picture/index";
+  static final videoList = "/Video/index";
 }
 
 class Method {

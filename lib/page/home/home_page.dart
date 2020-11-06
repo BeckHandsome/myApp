@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:my_app/routes/navigator_util.dart';
+import 'package:my_app/tool/dio_util.dart';
 import 'package:my_app/widgets/widget_marquee_control.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -11,9 +12,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>
-    with SingleTickerProviderStateMixin {
-  TabController _tabController;
+class _HomePageState extends State<HomePage> {
   List headerList = [
     {
       'image': 'images/u=2070453827,1163403148&fm=26&gp=0.jpg',
@@ -51,7 +50,6 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
     _requestPermission(_permission);
   }
 
@@ -112,11 +110,20 @@ class _HomePageState extends State<HomePage>
     });
   }
 
+  //获取轮播图信息
+  Future _getSwiperList() async {
+    return DioUtil().get(NWApi.news, pathParams: {"type": 0, "page": 10});
+  }
+
+  // 获取视频
+  Future _getVideoList() async {
+    return DioUtil().get(NWApi.videoList);
+  }
+
   @override
   void dispose() {
     super.dispose();
     AMapLocationClient.shutdown();
-    _tabController.dispose();
   }
 
   @override
@@ -135,24 +142,60 @@ class _HomePageState extends State<HomePage>
         title: Text("myapp"),
       ),
       body: Container(
-        child: Column(
+        child: ListView(
           children: [
             //轮播图
             Padding(
-              padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+              padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   minWidth: double.infinity, //宽度尽可能大
-                  maxHeight: 50.0, //最小高度为50像素
+                  maxHeight: 200.0, //最小高度为50像素
                 ),
-                child: Swiper(
-                  scrollDirection: Axis.horizontal,
-                  autoplay: true,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Text('${headerList[index]['name']}');
+                child: FutureBuilder(
+                  future: _getSwiperList(),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    // 请求已结束
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasError) {
+                        // 请求失败，显示错误
+                        return Text("Error: ${snapshot.error}");
+                      } else {
+                        // 请求成功，显示数据 Text("Contents: ${snapshot.data}")
+                        return Swiper(
+                          scrollDirection: Axis.horizontal,
+                          autoplay: true,
+                          pagination: SwiperPagination(),
+                          itemBuilder: (BuildContext context, int index) {
+                            return Image.network(
+                              '${snapshot.data['data'][index]['imgsrc']}',
+                              fit: BoxFit.fill,
+                            );
+                          },
+                          itemCount: snapshot.data['data'].length,
+                          onTap: (int index) {
+                            NavigatorUtil.navigateTo(
+                              context,
+                              '/newsDetail',
+                              params: {
+                                "title": snapshot.data['data'][index]['title'],
+                                "url": snapshot.data['data'][index]["url"]
+                              },
+                            );
+                          },
+                        );
+                      }
+                    } else {
+                      // 请求未结束，显示loading
+                      return Center(
+                        child: SizedBox(
+                          width: 50,
+                          height: 50,
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    }
                   },
-                  itemCount: headerList.length,
-                  // control: SwiperControl(),
                 ),
               ),
             ),
@@ -190,7 +233,7 @@ class _HomePageState extends State<HomePage>
                 ),
               ),
             ),
-            // 实时信息滚动
+            // 获取定位位置
             Padding(
               padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
               child: Row(
@@ -200,6 +243,7 @@ class _HomePageState extends State<HomePage>
                 ],
               ),
             ),
+            // 实时信息滚动
             Padding(
               padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
               child: ConstrainedBox(
@@ -207,63 +251,49 @@ class _HomePageState extends State<HomePage>
                   minWidth: double.infinity, //宽度尽可能大
                   maxHeight: 50.0, //最小高度为50像素
                 ),
-                child: MarqueeControlWidget(
-                  stepOffset: 300,
-                  children: Row(
-                    children: List.generate(
-                      4,
-                      (index) => Padding(
-                        padding: EdgeInsets.only(right: 20),
-                        child: Text(
-                          '手机用户155****052$index借款成功',
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: Color(0xFFEE8E2B),
+                child: FutureBuilder(
+                  future: _getVideoList(),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    // 请求已结束
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasError) {
+                        // 请求失败，显示错误
+                        return Text("Error: ${snapshot.error}");
+                      } else {
+                        // 请求成功，显示数据 Text("Contents: ${snapshot.data}")
+                        return MarqueeControlWidget(
+                          stepOffset: 300,
+                          children: Row(
+                            children: List.generate(
+                              snapshot.data['data']['videoList'].length,
+                              (index) => Padding(
+                                padding: EdgeInsets.only(right: 20),
+                                child: Text(
+                                  '${snapshot.data['data']['videoList'][index]['title']}',
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: index % 2 == 0
+                                        ? Color(0xFFEE8E2B)
+                                        : Colors.blueGrey,
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
+                        );
+                      }
+                    } else {
+                      // 请求未结束，显示loading
+                      return Center(
+                        child: SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(),
                         ),
-                      ),
-                    ),
-                  ),
+                      );
+                    }
+                  },
                 ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(0),
-              child: Material(
-                color: Colors.transparent,
-                child: TabBar(
-                  controller: _tabController,
-                  labelColor: Colors.blue,
-                  unselectedLabelColor: Colors.black,
-                  indicator: BoxDecoration(),
-                  tabs: [
-                    Tab(
-                      text: '全部',
-                      icon: Icon(Icons.person),
-                      iconMargin: EdgeInsets.only(bottom: 0),
-                    ),
-                    Tab(
-                      text: '最新',
-                      icon: Icon(Icons.person),
-                      iconMargin: EdgeInsets.only(bottom: 0),
-                    ),
-                    Tab(
-                      text: '最多',
-                      icon: Icon(Icons.person),
-                      iconMargin: EdgeInsets.only(bottom: 0),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                children: [
-                  Text('11111'),
-                  Text('11111'),
-                  Text('11111'),
-                ],
               ),
             ),
           ],
