@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_app/routes/navigator_util.dart';
 import 'package:my_app/tool/dio_util.dart';
 import 'package:my_app/tool/fluro_convert_util.dart';
+import 'package:my_app/widgets/widget_back_top.dart';
 import 'package:my_app/widgets/widget_refresh.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -94,6 +95,7 @@ class NewList extends StatefulWidget {
 class _NewListState extends State<NewList> with AutomaticKeepAliveClientMixin {
   List _dataList = [];
   int _pageNumber = 10;
+  ScrollController _controller = ScrollController();
   @override
   bool get wantKeepAlive => true;
 
@@ -147,79 +149,91 @@ class _NewListState extends State<NewList> with AutomaticKeepAliveClientMixin {
     super.build(context);
 
     /// see AutomaticKeepAliveClientMixin
-    return WidgetRefresh(
-      controller: _refreshController,
-      onRefresh: _onRefresh,
-      onLoading: _onLoading,
-      child: ListView(
-        children: List.generate(
-          _dataList.length,
-          (int i) => GestureDetector(
-            onTap: () {
-              NavigatorUtil.navigateTo(
-                context,
-                '/newsDetail',
-                params: {
-                  "title": _dataList[i]['title'],
-                  "url": _dataList[i]["url"]
-                },
-              );
-            },
-            behavior: HitTestBehavior.opaque,
-            child: Container(
-              padding: EdgeInsets.only(top: 10, bottom: 10),
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(width: 1.0, color: Color(0xFF999999)),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Flex(
-                    direction: Axis.horizontal,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 3,
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                            right: 10,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+    return _dataList.length > 0
+        ? BackTop(
+            controller: _controller,
+            child: WidgetRefresh(
+              controller: _refreshController,
+              onRefresh: _onRefresh,
+              onLoading: _onLoading,
+              child: ListView(
+                controller: _controller,
+                children: List.generate(
+                  _dataList.length,
+                  (int i) => GestureDetector(
+                    onTap: () {
+                      NavigatorUtil.navigateTo(
+                        context,
+                        '/newsDetail',
+                        params: {
+                          "title": _dataList[i]['title'],
+                          "url": _dataList[i]["url"]
+                        },
+                      );
+                    },
+                    behavior: HitTestBehavior.opaque,
+                    child: Container(
+                      padding: EdgeInsets.only(top: 10, bottom: 10),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom:
+                              BorderSide(width: 1.0, color: Color(0xFF999999)),
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Flex(
+                            direction: Axis.horizontal,
                             children: <Widget>[
-                              Text("${_dataList[i]["title"]}"),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    "${_dataList[i]["source"]} ",
-                                    style: TextStyle(color: Color(0xFF888888)),
+                              Expanded(
+                                flex: 3,
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    right: 10,
                                   ),
-                                ],
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text("${_dataList[i]["title"]}"),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text(
+                                            "${_dataList[i]["source"]} ",
+                                            style: TextStyle(
+                                                color: Color(0xFF888888)),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: SizedBox(
+                                  height: 100,
+                                  child: Image.network(
+                                    "${_dataList[i]["imgsrc"]}",
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
                               ),
                             ],
                           ),
-                        ),
+                        ],
                       ),
-                      Expanded(
-                        flex: 2,
-                        child: SizedBox(
-                          height: 100,
-                          child: Image.network(
-                            "${_dataList[i]["imgsrc"]}",
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ],
+                ),
               ),
             ),
-          ),
-        ),
-      ),
-    );
+          )
+        : Center(
+            child: Text('我在加载中...请等等我!!!!'),
+          );
   }
 }
