@@ -147,10 +147,18 @@ class _HomePageState extends State<HomePage> {
             //轮播图
             Padding(
               padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minWidth: double.infinity, //宽度尽可能大
-                  maxHeight: 200.0, //最小高度为50像素
+              child: Container(
+                width: double.infinity, //宽度尽可能大
+                height: 200.0, //最小高度为50像素
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    //渐变位置
+                    begin: Alignment.topLeft, //左上
+                    end: Alignment.bottomRight, //右下
+                    stops: [0.0, 1.0], //[渐变起始点, 渐变结束点]
+                    //渐变颜色[始点颜色, 结束颜色]
+                    colors: [Colors.red, Colors.blue],
+                  ),
                 ),
                 child: FutureBuilder(
                   future: _getSwiperList(),
@@ -167,9 +175,46 @@ class _HomePageState extends State<HomePage> {
                           autoplay: true,
                           pagination: SwiperPagination(),
                           itemBuilder: (BuildContext context, int index) {
-                            return Image.network(
-                              '${snapshot.data['data'][index]['imgsrc']}',
-                              fit: BoxFit.fill,
+                            return Stack(
+                              children: [
+                                Container(
+                                  width: double.infinity, //宽度尽可能大
+                                  height: double.infinity,
+                                  child: Image.network(
+                                    '${snapshot.data['data'][index]['imgsrc']}',
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                                Positioned(
+                                  child: Flex(
+                                    direction: Axis.horizontal,
+                                    children: [
+                                      ConstrainedBox(
+                                        constraints: BoxConstraints(
+                                          minWidth: double.infinity,
+                                          minHeight: 20,
+                                        ),
+                                        child: Opacity(
+                                          opacity: 0.6,
+                                          child: DecoratedBox(
+                                            decoration: BoxDecoration(
+                                              color: Colors.black,
+                                            ),
+                                            child: Text(
+                                              '${snapshot.data['data'][index]['title']}',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  bottom: 30,
+                                  left: 0,
+                                ),
+                              ],
                             );
                           },
                           itemCount: snapshot.data['data'].length,
