@@ -10,7 +10,11 @@ class MessagePage extends StatefulWidget {
   _MessagePageState createState() => _MessagePageState();
 }
 
-class _MessagePageState extends State<MessagePage> {
+class _MessagePageState extends State<MessagePage>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   List<String> items = ["1", "2", "3", "4", "5", "6"];
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);

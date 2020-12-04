@@ -8,7 +8,9 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="my_app"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true"> 
+        <!-- android:usesCleartextTraffic="true" 支持使用http协议播放视频 -->
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

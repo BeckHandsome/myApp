@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:amap_location/amap_location.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -175,46 +177,54 @@ class _HomePageState extends State<HomePage> {
                           autoplay: true,
                           pagination: SwiperPagination(),
                           itemBuilder: (BuildContext context, int index) {
-                            return Stack(
-                              children: [
-                                Container(
-                                  width: double.infinity, //宽度尽可能大
-                                  height: double.infinity,
-                                  child: Image.network(
-                                    '${snapshot.data['data'][index]['imgsrc']}',
-                                    fit: BoxFit.fill,
-                                  ),
-                                ),
-                                Positioned(
-                                  child: Flex(
-                                    direction: Axis.horizontal,
-                                    children: [
-                                      ConstrainedBox(
-                                        constraints: BoxConstraints(
-                                          minWidth: double.infinity,
-                                          minHeight: 20,
+                            return Container(
+                              width: double.infinity, //宽度尽可能大
+                              height: double.infinity,
+                              child: Column(
+                                children: [
+                                  Expanded(
+                                    child: Stack(
+                                      alignment: AlignmentDirectional.topStart,
+                                      children: [
+                                        Container(
+                                          width: double.infinity, //宽度尽可能大
+                                          height: double.infinity,
+                                          child: Image.network(
+                                            '${snapshot.data['data'][index]['imgsrc']}',
+                                            fit: BoxFit.fill,
+                                          ),
                                         ),
-                                        child: Opacity(
-                                          opacity: 0.6,
-                                          child: DecoratedBox(
-                                            decoration: BoxDecoration(
-                                              color: Colors.black,
-                                            ),
-                                            child: Text(
-                                              '${snapshot.data['data'][index]['title']}',
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                              overflow: TextOverflow.ellipsis,
+                                        Align(
+                                          alignment: Alignment.topCenter,
+                                          heightFactor: 10,
+                                          child: Container(
+                                            child: ConstrainedBox(
+                                              constraints: BoxConstraints(
+                                                minHeight: 20,
+                                              ),
+                                              child: Opacity(
+                                                opacity: 0.6,
+                                                child: DecoratedBox(
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.black,
+                                                  ),
+                                                  child: Text(
+                                                    '${snapshot.data['data'][index]['title']}',
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                  bottom: 30,
-                                  left: 0,
-                                ),
-                              ],
+                                ],
+                              ),
                             );
                           },
                           itemCount: snapshot.data['data'].length,

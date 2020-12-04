@@ -92,6 +92,11 @@ class NewList extends StatefulWidget {
   _NewListState createState() => _NewListState();
 }
 
+/*
+ * AutomaticKeepAliveClientMixin缓存页面
+ *  @override
+ * bool get wantKeepAlive => true;
+ */
 class _NewListState extends State<NewList> with AutomaticKeepAliveClientMixin {
   List _dataList = [];
   int _pageNumber = 10;

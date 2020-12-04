@@ -11,7 +11,8 @@ class NWApi {
   static final banner = "/News/banner";
   static final weather = "/Weather/get_weather";
   static final picture = "/picture/index";
-  static final videoList = "/Video/index";
+  static final videoList = "/Video/video_type";
+  static final videoDetail = "/Video/video_detail";
 }
 
 class Method {
