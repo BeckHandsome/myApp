@@ -38,7 +38,14 @@ android {
     lintOptions {
         disable 'InvalidPackage'
     }
-
+    // 修改打包后文件名称
+    applicationVariants.all { variant ->
+       variant.outputs.all {
+           def flavor = "my"
+           def versionName = variant.versionName
+           outputFileName = "prefix_${flavor}_${versionName}.apk"
+       }
+    }
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.example.my_app"

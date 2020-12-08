@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:my_app/routes/navigator_util.dart';
 import 'package:my_app/tool/dio_util.dart';
 import 'package:my_app/tool/fluro_convert_util.dart';
@@ -6,14 +7,14 @@ import 'package:my_app/widgets/widget_back_top.dart';
 import 'package:my_app/widgets/widget_refresh.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-// 新闻
-class NewsPage extends StatefulWidget {
+// 视频
+class VideoPage extends StatefulWidget {
   final Map<String, dynamic> params;
-  NewsPage({Key key, this.params}) : super(key: key);
-  _NewsPageState createState() => _NewsPageState();
+  VideoPage({Key key, this.params}) : super(key: key);
+  _VideoPageState createState() => _VideoPageState();
 }
 
-class _NewsPageState extends State<NewsPage> with TickerProviderStateMixin {
+class _VideoPageState extends State<VideoPage> with TickerProviderStateMixin {
   Map _params = {};
   TabController _tabController;
   List _tabs = [];
@@ -23,14 +24,11 @@ class _NewsPageState extends State<NewsPage> with TickerProviderStateMixin {
     super.initState();
     _params = FluroConvertUtils.fluroMapParamsDecode(widget.params);
     _tabs = [
-      {"name": "头条", "id": 0},
-      {"name": "军事", "id": 1},
-      {"name": "娱乐", "id": 2},
-      {"name": "体育", "id": 3},
-      {"name": "科技", "id": 4},
-      {"name": "艺术", "id": 5},
-      {"name": "教育", "id": 6},
-      {"name": "要闻", "id": 7},
+      {"name": "精品视频", "id": 0},
+      {"name": "搞笑视频", "id": 1},
+      {"name": "美女视频", "id": 2},
+      {"name": "体育视频", "id": 3},
+      {"name": "新闻现场", "id": 4},
     ];
     _tabController =
         TabController(initialIndex: 0, length: _tabs.length, vsync: this);
@@ -41,7 +39,7 @@ class _NewsPageState extends State<NewsPage> with TickerProviderStateMixin {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text('新闻'),
+        title: Text('视频'),
       ),
       body: Container(
         child: Column(
@@ -96,11 +94,11 @@ class NewList extends StatefulWidget {
  * AutomaticKeepAliveClientMixin缓存页面
  *  @override
  * bool get wantKeepAlive => true;
- * build方法中调用super.build(context);
  */
 class _NewListState extends State<NewList> with AutomaticKeepAliveClientMixin {
   List _dataList = [];
   int _pageNumber = 10;
+  String _loadingText = '';
   ScrollController _controller = ScrollController();
   @override
   bool get wantKeepAlive => true;
@@ -117,8 +115,9 @@ class _NewListState extends State<NewList> with AutomaticKeepAliveClientMixin {
 
   void _onRefresh() async {
     _pageNumber = 10;
+    _loadingText = '我在加载中...请等等我!!!!';
     // monitor network fetch
-    await DioUtil().get(NWApi.news,
+    await DioUtil().get(NWApi.videoList,
         pathParams: {"type": widget.type, "page": _pageNumber}).then(
       (res) => {
         print(res),
@@ -126,6 +125,12 @@ class _NewListState extends State<NewList> with AutomaticKeepAliveClientMixin {
           {
             setState(() {
               _dataList = res["data"];
+            })
+          }
+        else
+          {
+            setState(() {
+              _loadingText = '哈哈哈！！加载失败喽...';
             })
           }
       },
@@ -142,7 +147,7 @@ class _NewListState extends State<NewList> with AutomaticKeepAliveClientMixin {
         if (res["msg"] == "success" && res['data'] != null)
           {
             setState(() {
-              _dataList.addAll(res["data"]);
+              _dataList.addAll(res["data"]['videoList']);
             })
           }
       },
@@ -170,10 +175,10 @@ class _NewListState extends State<NewList> with AutomaticKeepAliveClientMixin {
                     onTap: () {
                       NavigatorUtil.navigateTo(
                         context,
-                        '/newsDetail',
+                        '/videoDetail',
                         params: {
                           "title": _dataList[i]['title'],
-                          "url": _dataList[i]["url"]
+                          "id": _dataList[i]["vid"],
                         },
                       );
                     },
@@ -208,7 +213,7 @@ class _NewListState extends State<NewList> with AutomaticKeepAliveClientMixin {
                                             MainAxisAlignment.start,
                                         children: <Widget>[
                                           Text(
-                                            "${_dataList[i]["source"]} ",
+                                            "${_dataList[i]["videosource"]} ",
                                             style: TextStyle(
                                                 color: Color(0xFF888888)),
                                           ),
@@ -223,7 +228,7 @@ class _NewListState extends State<NewList> with AutomaticKeepAliveClientMixin {
                                 child: SizedBox(
                                   height: 100,
                                   child: Image.network(
-                                    "${_dataList[i]["imgsrc"]}",
+                                    "${_dataList[i]["cover"]}",
                                     fit: BoxFit.fill,
                                   ),
                                 ),
@@ -239,7 +244,7 @@ class _NewListState extends State<NewList> with AutomaticKeepAliveClientMixin {
             ),
           )
         : Center(
-            child: Text('我在加载中...请等等我!!!!'),
+            child: Text('$_loadingText'),
           );
   }
 }

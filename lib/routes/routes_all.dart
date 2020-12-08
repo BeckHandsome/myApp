@@ -8,6 +8,8 @@ import 'package:my_app/page/my_page/user_info_page.dart';
 import 'package:my_app/page/news/news_detail_page.dart';
 import 'package:my_app/page/news/news_page.dart';
 import 'package:my_app/page/picture/picture_page.dart';
+import 'package:my_app/page/video/video_detail_page.dart';
+import 'package:my_app/page/video/video_page.dart';
 import 'package:my_app/page/weather/weather_page.dart';
 import 'package:my_app/page/webDaily/web_daily_page.dart';
 
@@ -18,7 +20,8 @@ class PageRouter {
   static String news = '/news';
   static String newsDetail = '/newsDetail';
   static String weather = '/weather';
-  // static String video = '/video';
+  static String video = '/video';
+  static String videoDetail = '/videoDetail';
   static String picture = '/picture';
   static String job = '/job';
   static String webDaily = '/webDaily';
@@ -48,9 +51,14 @@ class PageRouter {
       return WeatherPage(params: parameters);
     }),
     // 视频
-    // video: Handler(handlerFunc: (BuildContext context, parameters) {
-    //   return Login();
-    // }),
+    video: Handler(handlerFunc: (BuildContext context, parameters) {
+      return VideoPage();
+    }),
+    // 视频详情
+    videoDetail: Handler(
+        handlerFunc: (BuildContext context, Map<String, dynamic> parameters) {
+      return VideoDetailPage(params: parameters);
+    }),
     // 图片
     picture: Handler(
         handlerFunc: (BuildContext context, Map<String, dynamic> parameters) {
