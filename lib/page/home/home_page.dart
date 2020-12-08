@@ -14,7 +14,8 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with AutomaticKeepAliveClientMixin {
   List headerList = [
     {
       'image': 'images/u=2070453827,1163403148&fm=26&gp=0.jpg',
@@ -47,69 +48,12 @@ class _HomePageState extends State<HomePage> {
       'path': '/webDaily',
     },
   ];
-  final _permission = Permission.location;
-  String _city = '';
+  @override
+  bool get wantKeepAlive => true;
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
-    _requestPermission(_permission);
-  }
-
-  // 判断获取位置权限
-  Future<void> _requestPermission(Permission permission) async {
-    // if ( await permission.status == PermissionStatus.undetermined) {
-    //     Toast.toast(context, msg: "请手动打开定位功能");
-    //     return;
-    // }
-    if (await permission.status == PermissionStatus.granted) {
-      await AMapLocationClient.startup(new AMapLocationOption(
-        locationMode: AMapLocationMode.Hight_Accuracy,
-        gpsFirst: true,
-        desiredAccuracy: CLLocationAccuracy.kCLLocationAccuracyBest,
-        geoLanguage: GeoLanguage.ZH,
-        needsAddress: true,
-      ));
-      AMapLocationClient.onLocationUpate.listen((AMapLocation loc) {
-        if (!mounted) return;
-        _getAddress(loc);
-      });
-      AMapLocationClient.startLocation();
-      return;
-    } else {
-      final status = await permission.request();
-      if (status == PermissionStatus.granted) {
-        await AMapLocationClient.startup(new AMapLocationOption(
-          locationMode: AMapLocationMode.Hight_Accuracy,
-          gpsFirst: true,
-          desiredAccuracy: CLLocationAccuracy.kCLLocationAccuracyBest,
-          geoLanguage: GeoLanguage.ZH,
-          needsAddress: true,
-        ));
-        AMapLocationClient.onLocationUpate.listen((AMapLocation loc) {
-          if (!mounted) return;
-          _getAddress(loc);
-        });
-        AMapLocationClient.startLocation();
-      }
-    }
-  }
-
-  Future<void> _getAddress(AMapLocation loc) async {
-    Fluttertoast.showToast(
-      msg:
-          "定位成功：经度${loc.longitude}纬度${loc.latitude}city${loc.city}formattedAddress${loc.formattedAddress}",
-      gravity: ToastGravity.CENTER,
-      timeInSecForIosWeb: 1,
-      backgroundColor: Color(int.parse('0x0cf000000')).withOpacity(0.5),
-      textColor: Colors.white,
-      fontSize: 16.0,
-    );
-    setState(() {
-      _city = loc.city;
-      if (_city != null) {
-        AMapLocationClient.stopLocation();
-      }
-    });
   }
 
   //获取轮播图信息
@@ -130,6 +74,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       appBar: AppBar(
         leading: Center(
@@ -289,15 +234,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             // 获取定位位置
-            Padding(
-              padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
-              child: Row(
-                children: [
-                  Text('获取定位位置：'),
-                  Text('$_city'),
-                ],
-              ),
-            ),
+            Location(),
             // 实时信息滚动
             Padding(
               padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
@@ -320,18 +257,31 @@ class _HomePageState extends State<HomePage> {
                           stepOffset: 300,
                           children: Row(
                             children: List.generate(
-                              snapshot.data['data']['videoList'].length,
-                              (index) => Padding(
-                                padding: EdgeInsets.only(right: 20),
-                                child: Text(
-                                  '${snapshot.data['data']['videoList'][index]['title']}',
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    color: index % 2 == 0
-                                        ? Color(0xFFEE8E2B)
-                                        : Colors.blueGrey,
+                              snapshot.data['data'].length,
+                              (index) => GestureDetector(
+                                child: Padding(
+                                  padding: EdgeInsets.only(right: 20),
+                                  child: Text(
+                                    '${snapshot.data['data'][index]['title']}',
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: index % 2 == 0
+                                          ? Color(0xFFEE8E2B)
+                                          : Colors.blueGrey,
+                                    ),
                                   ),
                                 ),
+                                onTap: () {
+                                  NavigatorUtil.navigateTo(
+                                    context,
+                                    '/videoDetail',
+                                    params: {
+                                      "title": snapshot.data['data'][index]
+                                          ['title'],
+                                      "id": snapshot.data['data'][index]["vid"],
+                                    },
+                                  );
+                                },
                               ),
                             ),
                           ),
@@ -353,6 +303,97 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class Location extends StatefulWidget {
+  Location({Key key}) : super(key: key);
+  _LocationState createState() => _LocationState();
+}
+
+class _LocationState extends State<Location> {
+  final _permission = Permission.location;
+  String _city = '';
+  @override
+  void initState() {
+    super.initState();
+    _requestPermission(_permission);
+  }
+
+  // 判断获取位置权限
+  Future<void> _requestPermission(Permission permission) async {
+    // if ( await permission.status == PermissionStatus.undetermined) {
+    //     Toast.toast(context, msg: "请手动打开定位功能");
+    //     return;
+    // }
+    if (await permission.status == PermissionStatus.granted) {
+      await AMapLocationClient.startup(new AMapLocationOption(
+        locationMode: AMapLocationMode.Hight_Accuracy,
+        gpsFirst: true,
+        desiredAccuracy: CLLocationAccuracy.kCLLocationAccuracyBest,
+        geoLanguage: GeoLanguage.ZH,
+        needsAddress: true,
+      ));
+      AMapLocationClient.onLocationUpate.listen((AMapLocation loc) {
+        if (!mounted) return;
+        _getAddress(loc);
+      });
+      AMapLocationClient.startLocation();
+      return;
+    } else {
+      final status = await permission.request();
+      if (status == PermissionStatus.granted) {
+        await AMapLocationClient.startup(new AMapLocationOption(
+          locationMode: AMapLocationMode.Hight_Accuracy,
+          gpsFirst: true,
+          desiredAccuracy: CLLocationAccuracy.kCLLocationAccuracyBest,
+          geoLanguage: GeoLanguage.ZH,
+          needsAddress: true,
+        ));
+        AMapLocationClient.onLocationUpate.listen((AMapLocation loc) {
+          if (!mounted) return;
+          _getAddress(loc);
+        });
+        AMapLocationClient.startLocation();
+      }
+    }
+  }
+
+  Future<void> _getAddress(AMapLocation loc) async {
+    Fluttertoast.showToast(
+      msg:
+          "定位成功：经度${loc.longitude}纬度${loc.latitude}city${loc.city}formattedAddress${loc.formattedAddress}",
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Color(int.parse('0x0cf000000')).withOpacity(0.5),
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+    setState(() {
+      _city = loc.city;
+      if (_city != null) {
+        AMapLocationClient.stopLocation();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    AMapLocationClient.shutdown();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+      child: Row(
+        children: [
+          Text('获取定位位置：'),
+          Text('$_city'),
+        ],
       ),
     );
   }

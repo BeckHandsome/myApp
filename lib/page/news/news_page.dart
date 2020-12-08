@@ -96,6 +96,7 @@ class NewList extends StatefulWidget {
  * AutomaticKeepAliveClientMixin缓存页面
  *  @override
  * bool get wantKeepAlive => true;
+ * build方法中调用super.build(context);
  */
 class _NewListState extends State<NewList> with AutomaticKeepAliveClientMixin {
   List _dataList = [];

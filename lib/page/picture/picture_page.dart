@@ -79,8 +79,13 @@ class _PicturePageState extends State<PicturePage> {
                                         ),
                                       ),
                                     ),
-                                    placeholder: (context, url) =>
-                                        CircularProgressIndicator(),
+                                    placeholder: (context, url) => Center(
+                                      child: SizedBox(
+                                        width: 30,
+                                        height: 30,
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                    ),
                                     errorWidget: (context, url, error) =>
                                         Icon(Icons.error),
                                   ),

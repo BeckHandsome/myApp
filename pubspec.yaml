@@ -54,6 +54,8 @@ dependencies:
   # 视频播放器
   video_player: ^0.10.1+6
   chewie: ^0.9.8+1
+  # 侧滑
+  flutter_slidable: ^0.5.7
   
 dev_dependencies:
   flutter_test:
