@@ -16,15 +16,15 @@ For help getting started with Flutter, view our
 samples, guidance on mobile development, and a full API reference.
 
 ## app中有的功能
-dio的分装
-fluro的封装
-tab页面的缓存
-图片的缓存
-位置定位
-视频播放
-下拉刷新上拉加载
-侧滑操作
-启动页
-webview
-轮播图
+* dio的分装
+* fluro的封装
+* tab页面的缓存
+* 图片的缓存
+* 位置定位
+* 视频播放
+* 下拉刷新上拉加载
+* 侧滑操作
+* 启动页
+* webview
+* 轮播图
 
