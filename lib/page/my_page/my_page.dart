@@ -176,6 +176,28 @@ class _MyPageState extends State<MyPage> {
                           ),
                         ),
                         child: ListTile(
+                          leading: Icon(Icons.message),
+                          title: Text('消息推送设置'),
+                          trailing: Icon(Icons.keyboard_arrow_right),
+                          onTap: () {
+                            NavigatorUtil.navigateTo(
+                              context,
+                              '/pushMessagePage',
+                            );
+                          },
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              width: 1,
+                              color: Color(0xffEDEDED),
+                            ),
+                          ),
+                        ),
+                        child: ListTile(
                           leading: Icon(Icons.system_update),
                           title: Text('检测更新'),
                           trailing: Icon(Icons.keyboard_arrow_right),
@@ -258,10 +280,26 @@ class _MyPageState extends State<MyPage> {
                           trailing: Icon(Icons.keyboard_arrow_right),
                         ),
                       ),
+                      Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              width: 1,
+                              color: Color(0xffEDEDED),
+                            ),
+                          ),
+                        ),
+                        child: ListTile(
+                          leading: Icon(Icons.home),
+                          title: Text('App当前版本号'),
+                          trailing: Icon(Icons.keyboard_arrow_right),
+                        ),
+                      ),
                     ],
                   );
                 },
-                childCount: 1, //50个列表项
+                childCount: 1,
               ),
             ),
           ),

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:my_app/page/home/home.dart';
 import 'package:my_app/page/job/job_page.dart';
 import 'package:my_app/page/login.dart';
+import 'package:my_app/page/my_page/device_page.dart';
+import 'package:my_app/page/my_page/push_message_page.dart';
 import 'package:my_app/page/my_page/set_page.dart';
 import 'package:my_app/page/my_page/user_info_page.dart';
 import 'package:my_app/page/news/news_detail_page.dart';
@@ -27,6 +29,8 @@ class PageRouter {
   static String webDaily = '/webDaily';
   static String userInfo = '/userInfo';
   static String mySet = '/set';
+  static String devicePage = '/devicePage';
+  static String pushMessagePage = '/pushMessagePage';
 
   // 在这里我定义了一个map集合，key是页面的path,value是按照fluro的要求是一个Handler的实例
   static final Map<String, Handler> handlerRouter = {
@@ -83,6 +87,16 @@ class PageRouter {
     mySet: Handler(
         handlerFunc: (BuildContext context, Map<String, dynamic> parameters) {
       return SetPage();
+    }),
+    // 登录设备
+    devicePage: Handler(
+        handlerFunc: (BuildContext context, Map<String, dynamic> parameters) {
+      return DevicePage();
+    }),
+    // 消息推送
+    pushMessagePage: Handler(
+        handlerFunc: (BuildContext context, Map<String, dynamic> parameters) {
+      return PushMessagePage();
     }),
   };
 }
