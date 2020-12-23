@@ -21,6 +21,7 @@ class _SetPageState extends State<SetPage> {
         replace: true, clearStack: true);
   }
 
+  @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
@@ -48,6 +49,12 @@ class _SetPageState extends State<SetPage> {
                 ),
                 BorderBottomListTileWidget(
                   title: Text('登录设备'),
+                  onTap: () {
+                    NavigatorUtil.navigateTo(
+                      context,
+                      '/devicePage',
+                    );
+                  },
                 ),
                 BorderBottomListTileWidget(
                   title: Text('永久注销账号'),

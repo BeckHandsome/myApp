@@ -58,7 +58,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('性别'),
-                  Text('男'),
+                  Text('女'),
                 ],
               ),
               onTap: () {
