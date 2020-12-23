@@ -27,4 +27,5 @@ samples, guidance on mobile development, and a full API reference.
 * 启动页
 * webview
 * 轮播图
-
+* 极光推送
+* 设备信息
