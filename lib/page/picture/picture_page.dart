@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:my_app/tool/dio_util.dart';
 import 'package:my_app/tool/fluro_convert_util.dart';
+import 'package:my_app/widgets/widget_photo_view.dart';
 
 // 段子
 class PicturePage extends StatefulWidget {
@@ -53,57 +54,64 @@ class _PicturePageState extends State<PicturePage> {
                   _dataList.length,
                   (index) => GestureDetector(
                     child: FractionallySizedBox(
-                        alignment: Alignment.center,
-                        widthFactor: 0.5,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                          child: Container(
-                            margin: EdgeInsets.all(5),
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(bottom: 10),
-                                  child: CachedNetworkImage(
-                                    imageUrl: "${_dataList[index]['scover']}",
-                                    imageBuilder: (context, imageProvider) =>
-                                        Container(
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: imageProvider,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                    placeholder: (context, url) => Center(
-                                      child: SizedBox(
-                                        width: 30,
-                                        height: 30,
-                                        child: CircularProgressIndicator(),
-                                      ),
-                                    ),
-                                    errorWidget: (context, url, error) =>
-                                        Icon(Icons.error),
-                                  ),
-                                  width: double.infinity,
-                                  height: 200.0,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    left: 5.0,
-                                    right: 5.0,
-                                    bottom: 5.0,
-                                  ),
-                                  child: Text('${_dataList[index]["setname"]}'),
-                                ),
-                              ],
-                            ),
+                      alignment: Alignment.center,
+                      widthFactor: 0.5,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                        child: Container(
+                          margin: EdgeInsets.all(5),
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
                           ),
-                        )),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(bottom: 10),
+                                child: CachedNetworkImage(
+                                  imageUrl: "${_dataList[index]['scover']}",
+                                  imageBuilder: (context, imageProvider) =>
+                                      Container(
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: imageProvider,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  placeholder: (context, url) => Center(
+                                    child: SizedBox(
+                                      width: 30,
+                                      height: 30,
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      Icon(Icons.error),
+                                ),
+                                width: double.infinity,
+                                height: 200.0,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  left: 5.0,
+                                  right: 5.0,
+                                  bottom: 5.0,
+                                ),
+                                child: Text('${_dataList[index]["setname"]}'),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    onTap: () {
+                      widgetPhotoView(
+                        context: context,
+                        dataList: _dataList[index]['pics'],
+                      );
+                    },
                   ),
                 ),
               ),
