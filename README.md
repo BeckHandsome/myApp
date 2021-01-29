@@ -29,3 +29,4 @@ samples, guidance on mobile development, and a full API reference.
 * 轮播图
 * 极光推送
 * 设备信息
+* 图片预览
