@@ -40,7 +40,6 @@ class _PushMessagePageState extends State<PushMessagePage> {
 
   Future<void> initPlatformState() async {
     String platformVersion;
-
     try {
       /*监听响应方法的编写*/
       jpush.addEventHandler(
@@ -123,6 +122,7 @@ class _PushMessagePageState extends State<PushMessagePage> {
                     buildId: 1,
                     content: '看到了说明已经成功了',
                     fireTime: fireDate,
+                    badge: 1,
                     subtitle: '一个测试',
                   );
                   jpush.sendLocalNotification(localNotification).then((res) {
@@ -133,7 +133,7 @@ class _PushMessagePageState extends State<PushMessagePage> {
                 },
               ),
             ),
-            Text(debugLable ?? "Unknown")
+            Text(debugLable ?? "Unknown"),
           ],
         ),
       ),

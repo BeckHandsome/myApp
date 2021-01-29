@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:my_app/routes/navigator_util.dart';
+import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
 
 class MyPage extends StatefulWidget {
@@ -12,10 +13,24 @@ class MyPage extends StatefulWidget {
 
 class _MyPageState extends State<MyPage> {
   String _cacheSizeStr = '';
+  PackageInfo _packageInfo = PackageInfo(
+    appName: '',
+    packageName: '',
+    version: '',
+    buildNumber: '',
+  );
   @override
   void initState() {
     super.initState();
     loadCache();
+    _initPackageInfo();
+  }
+
+  Future<void> _initPackageInfo() async {
+    final PackageInfo info = await PackageInfo.fromPlatform();
+    setState(() {
+      _packageInfo = info;
+    });
   }
 
   ///获取缓存（加载缓存）
@@ -293,7 +308,7 @@ class _MyPageState extends State<MyPage> {
                         child: ListTile(
                           leading: Icon(Icons.home),
                           title: Text('App当前版本号'),
-                          trailing: Icon(Icons.keyboard_arrow_right),
+                          trailing: Text('${_packageInfo.version}'),
                         ),
                       ),
                     ],

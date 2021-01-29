@@ -60,6 +60,12 @@ dependencies:
   device_info: ^1.0.0
   # 消息推送
   jpush_flutter: ^0.6.1
+  # 图片浏览
+  photo_view: ^0.10.3
+  # 获取应用信息
+  package_info: ^0.4.3+2
+  # 保存图片到本地
+  image_gallery_saver: ^1.6.7
   
 dev_dependencies:
   flutter_test:
