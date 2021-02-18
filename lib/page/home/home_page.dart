@@ -47,6 +47,11 @@ class _HomePageState extends State<HomePage>
       'name': '前端日报',
       'path': '/webDaily',
     },
+    {
+      'image': 'images/u=2070453827,1163403148&fm=26&gp=0.jpg',
+      'name': '数据存储sqflite',
+      'path': '/sqFlite',
+    },
   ];
   @override
   bool get wantKeepAlive => true;
@@ -212,6 +217,7 @@ class _HomePageState extends State<HomePage>
                         alignment: Alignment.center,
                         widthFactor: 0.2,
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             ClipOval(
                               child: Image.asset(

@@ -10,6 +10,7 @@ import 'package:my_app/page/my_page/user_info_page.dart';
 import 'package:my_app/page/news/news_detail_page.dart';
 import 'package:my_app/page/news/news_page.dart';
 import 'package:my_app/page/picture/picture_page.dart';
+import 'package:my_app/page/sqflite/sqflite_page.dart';
 import 'package:my_app/page/video/video_detail_page.dart';
 import 'package:my_app/page/video/video_page.dart';
 import 'package:my_app/page/weather/weather_page.dart';
@@ -27,6 +28,7 @@ class PageRouter {
   static String picture = '/picture';
   static String job = '/job';
   static String webDaily = '/webDaily';
+  static String sqFlite = '/sqFlite';
   static String userInfo = '/userInfo';
   static String mySet = '/set';
   static String devicePage = '/devicePage';
@@ -97,6 +99,11 @@ class PageRouter {
     pushMessagePage: Handler(
         handlerFunc: (BuildContext context, Map<String, dynamic> parameters) {
       return PushMessagePage();
+    }),
+    // 数据库存储SqFlite
+    sqFlite: Handler(
+        handlerFunc: (BuildContext context, Map<String, dynamic> parameters) {
+      return SqFlitePage();
     }),
   };
 }
